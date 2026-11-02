@@ -1,7 +1,7 @@
 import type { Snapshot } from '../types'
 import { PINK_DOLPHIN, SWIMMERS } from './creatures'
 import type { Swimmer } from './creatures'
-import { GIANT_OCTOPUS, PIRATE_SHIP, TREASURE } from './deep'
+import { PIRATE_SHIP, TREASURE } from './deep'
 import { dolphinLeap } from './surface'
 import { diveWatch, oxygenOf, oxygenPanel } from './gear'
 import { resetText, tokensText } from './usage'
@@ -30,8 +30,8 @@ export const surfaceVisible = (percent = 0): boolean => worldShift(percent) > 0
 // 답을 읽은 때(초)로 정해서, 같은 답에서는 다시 그려져도 바뀌지 않는다
 export const isPinkDay = (readAt: number): boolean => Math.floor(readAt / 1000) % 8 === 0
 
-const swim = (pink: boolean) => ({ y, dur, begin, body, flip, scale = 1, pinkChance, rest = 0 }: Swimmer) => {
-  const [a, b] = flip ? [`${OW + 60},${y}`, `-80,${y}`] : [`-80,${y}`, `${OW + 60},${y}`]
+const swim = (pink: boolean) => ({ y, dur, begin, body, flip, scale = 1, pinkChance, rest = 0, reach = 80 }: Swimmer) => {
+  const [a, b] = flip ? [`${OW + reach - 20},${y}`, `-${reach},${y}`] : [`-${reach},${y}`, `${OW + reach - 20},${y}`]
   // rest가 있으면 지나간 뒤 화면 밖에서 쉬었다 다시 온다
   const move = rest ? `values="${a};${b};${b}" keyTimes="0;${+(dur / (dur + rest)).toFixed(3)};1"` : `values="${a};${b}"`
   return `<g><animateTransform attributeName="transform" type="translate" ${move} dur="${dur + rest}s" begin="-${begin}s" repeatCount="indefinite"/>`
@@ -68,7 +68,6 @@ const world = (pink: boolean) =>
   + [40, 150, 260].map(x => `<path d="M${x} 0 l30 0 l40 150 l-50 0z" fill="url(#ray)"/>`).join('')
   + waves()
   + dolphinLeap
-  + `<g transform="translate(250,568) scale(1.2)">${GIANT_OCTOPUS}</g>`
   + SWIMMERS.map(swim(pink)).join('')
   + snow()
   + `<path d="M0 ${FLOOR + 40} V${FLOOR} q40 -8 80 -2 t90 0 t100 -4 t90 2 V${FLOOR + 40}z" fill="#120d08"/>`

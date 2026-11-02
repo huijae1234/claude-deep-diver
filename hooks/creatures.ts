@@ -1,5 +1,6 @@
 // 수심 구간별 바다 생물. 모두 원점 기준, 오른쪽을 보고 있다.
 import { EYE, bob, eye, wag } from './draw'
+import { GIANT_OCTOPUS } from './deep'
 
 // ── 0~20%: 햇살 바다 ──
 const tang = wag(-10, 0, 10, 0.6, `<path d="M-10 0 l-7 -6 q1 6 0 12z" fill="#ffb800"/><path d="M-11 0 l-5 -3 M-11 0 l-5 3 M-11 0 h-5" stroke="#e09a00" stroke-width="0.4"/>`)
@@ -168,7 +169,8 @@ const atolla = bob(-3, 2.2, [-7.5, -4.5, -1.5, 1.5, 4.5, 7.5].map((x, i) =>
   + `<ellipse cy="0.5" rx="9" ry="2" fill="none" stroke="#60a5fa" stroke-width="1.4" stroke-dasharray="2 1.4"><animate attributeName="stroke-opacity" values="1;0.2;1" dur="0.9s" repeatCount="indefinite"/></ellipse>`)
 
 // pinkChance: 운 좋은 날엔 분홍 돌고래로 바뀐다. rest: 지나간 뒤 화면 밖에서 쉬는 초(가끔 지나가게)
-export type Swimmer = { y: number; dur: number; begin: number; body: string; flip?: boolean; scale?: number; pinkChance?: boolean; rest?: number }
+// reach: 화면 밖으로 숨는 거리(큰 생물은 더 멀리 나가야 안 보인다)
+export type Swimmer = { y: number; dur: number; begin: number; body: string; flip?: boolean; scale?: number; pinkChance?: boolean; rest?: number; reach?: number }
 
 // 세계 좌표 y(수심)마다 지나다니는 생물들. 20%마다 160px
 export const SWIMMERS: Swimmer[] = [
@@ -185,6 +187,8 @@ export const SWIMMERS: Swimmer[] = [
   { y: 372, dur: 34, begin: 12, body: whales },
   { y: 420, dur: 28, begin: 2, body: turtleRabbit, scale: 1.3 },
   { y: 456, dur: 24, begin: 5, body: squid, flip: true },
+  // 대왕문어는 늘 보이지 않고 가끔 천천히 지나간다
+  { y: 568, dur: 30, begin: 20, body: GIANT_OCTOPUS, scale: 1.2, rest: 40, reach: 150 },
   { y: 505, dur: 22, begin: 9, body: blobfish },
   { y: 548, dur: 17, begin: 3, body: viper, flip: true },
   { y: 672, dur: 21, begin: 7, body: angler, flip: true },

@@ -86,6 +86,9 @@ test('바다 식구들: 대왕문어·토끼 태운 자라·해적선·보물·�
   for (const name of ['giant-octopus', 'turtle', 'rabbit', 'pirate', 'treasure', 'leap', 'spout']) {
     expect(svg).toContain(`class="${name}"`)
   }
+  // 대왕문어는 한자리에 서 있지 않고, 30초 동안 지나간 뒤 40초 쉬었다 다시 온다
+  const octopus = svg.slice(0, svg.indexOf('class="giant-octopus"'))
+  expect(octopus.slice(octopus.lastIndexOf('type="translate"'))).toContain('keyTimes="0;0.429;1" dur="70s"')
 })
 
 test('분홍 돌고래는 8번 중 1번꼴, 같은 답에서는 그대로', () => {
