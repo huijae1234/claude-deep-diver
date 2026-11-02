@@ -1,0 +1,1 @@
+{ "name": "usage-band", "version": "0.2.0", "description": "사용량이 늘수록 잠수부가 깊은 바다로 내려가는 입력창 위 상태 띠(대화 기억 시계·5시간 바다·7일 산소통)", "author": { "name": "huijae1234" }, "types": "./types/index.d.ts" }
