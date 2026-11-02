@@ -12,6 +12,7 @@ export const resetText = (resetsAt: string | undefined, now: number): string => 
   if (minutes <= 0) return '곧 초기화'
   const h = Math.floor(minutes / 60)
   const m = minutes % 60
+  if (h >= 24) return `${Math.floor(h / 24)}일 ${h % 24}시간`
   return h > 0 ? `${h}시간 ${m}분` : `${m}분`
 }
 
@@ -34,7 +35,7 @@ export const toSnapshot = (
     contextPercent: usage.context.percent,
     fiveHour: five && { percent: five.percentUsed, resetsAt: five.resetsAt },
     sevenDay: seven && { percent: seven.percentUsed, resetsAt: seven.resetsAt },
-    prevFivePercent: prev?.fiveHour?.percent,
+    prevSevenPercent: prev?.sevenDay?.percent,
     intro: week !== undefined && week !== lastWeek,
     readAt,
   }

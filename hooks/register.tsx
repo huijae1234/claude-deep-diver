@@ -52,18 +52,18 @@ export const register: Register = on => {
     }
 
     const { Box, Text } = $.ui.resolve(e)
-    const reset = resetText(s.fiveHour?.resetsAt, now)
-    const o2 = oxygenOf(s.sevenDay?.percent)
+    const reset = resetText(s.sevenDay?.resetsAt, now)
+    const o2 = oxygenOf(s.fiveHour?.percent)
     return (
       <Box gap={2}>
         <Text color={memoryLevel(s.contextPercent).color}>
           ⌚ 대화 기억 {tokensText(s.tokens)} · {memoryLevel(s.contextPercent).label}
         </Text>
-        <Text color={(s.fiveHour?.percent ?? 0) > 80 ? 'red' : 'blue'}>
-          🤿 5시간 {blocks(s.fiveHour?.percent)} {Math.round(s.fiveHour?.percent ?? 0)}% · {ZONES[zoneOf(s.fiveHour?.percent)]}
+        <Text color={(s.sevenDay?.percent ?? 0) > 80 ? 'red' : 'blue'}>
+          🤿 7일 {blocks(s.sevenDay?.percent)} {Math.round(s.sevenDay?.percent ?? 0)}% · {ZONES[zoneOf(s.sevenDay?.percent)]}
           {reset ? ` · ${reset}` : ''}
         </Text>
-        <Text color={(o2 ?? 100) < 20 ? 'red' : 'magenta'}>🫧 7일 산소 {o2 ?? '—'}% 남음</Text>
+        <Text color={(o2 ?? 100) < 20 ? 'red' : 'magenta'}>🫧 5시간 산소 {o2 ?? '—'}% 남음</Text>
       </Box>
     )
   })

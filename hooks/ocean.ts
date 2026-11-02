@@ -194,11 +194,11 @@ const pill = (x: number, y: number, body: string) =>
   + `<text x="${x + 7}" y="${y + 1}" font-size="14" fill="#ffffff" font-weight="600">${body}</text></g>`
 
 const ocean = (s: Snapshot, now: number, motion: Motion) => {
-  const p = s.fiveHour?.percent
-  const reset = resetText(s.fiveHour?.resetsAt, now)
+  const p = s.sevenDay?.percent
+  const reset = resetText(s.sevenDay?.resetsAt, now)
   const isRising = motion.from !== undefined && motion.to < motion.from - 0.5
   const place = isOnHelicopter(p) ? '🚁 점프 준비' : ZONES[zoneOf(p)]
-  const head = p === undefined ? '5시간 —' : `5시간 ${Math.round(p)}% · ${place}${isRising ? ' · ⬆ 올라오는 중' : ''}`
+  const head = p === undefined ? '7일 —' : `7일 ${Math.round(p)}% · ${place}${isRising ? ' · ⬆ 올라오는 중' : ''}`
   return `<defs><clipPath id="sea"><rect width="${OW}" height="${BAND_H}" rx="16"/></clipPath></defs>`
     + `<g transform="translate(${OX},0)"><g clip-path="url(#sea)">`
     + scene(motion)
@@ -212,8 +212,8 @@ export const bandSvg = (s: Snapshot, now: number, isWorking: boolean): string =>
   // 새 숫자를 읽은 직후에만 움직임을 보여 준다(다시 그려질 때마다 반복되지 않게)
   const isFresh = now - s.readAt < 8000
   const motion: Motion = {
-    from: isFresh ? s.prevFivePercent : undefined,
-    to: s.fiveHour?.percent ?? 0,
+    from: isFresh ? s.prevSevenPercent : undefined,
+    to: s.sevenDay?.percent ?? 0,
     intro: isFresh && s.intro,
     isWorking,
     pink: isPinkDay(s.readAt),
@@ -221,13 +221,13 @@ export const bandSvg = (s: Snapshot, now: number, isWorking: boolean): string =>
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${BAND_W}" height="${BAND_H}" viewBox="0 0 ${BAND_W} ${BAND_H}" font-family="system-ui, sans-serif">`
     + diveWatch(s.tokens, s.contextPercent, WATCH_W, BAND_H)
     + ocean(s, now, motion)
-    + `<g transform="translate(${PANEL_X},0)">${oxygenPanel(s.sevenDay?.percent, BAND_W - PANEL_X, BAND_H)}</g>`
+    + `<g transform="translate(${PANEL_X},0)">${oxygenPanel(s.fiveHour?.percent, BAND_W - PANEL_X, BAND_H)}</g>`
     + '</svg>'
 }
 
 export const bandAlt = (s: Snapshot, now: number): string => {
-  const reset = resetText(s.fiveHour?.resetsAt, now)
-  const p = s.fiveHour?.percent
-  return `대화 기억 ${tokensText(s.tokens)}, 5시간 한도 ${p ?? '—'}%${p === undefined ? '' : ` (${ZONES[zoneOf(p)]})`}`
-    + `${reset ? `, ${reset} 뒤 초기화` : ''}, 7일 산소 ${oxygenOf(s.sevenDay?.percent) ?? '—'}% 남음`
+  const reset = resetText(s.sevenDay?.resetsAt, now)
+  const p = s.sevenDay?.percent
+  return `대화 기억 ${tokensText(s.tokens)}, 7일 한도 ${p ?? '—'}%${p === undefined ? '' : ` (${ZONES[zoneOf(p)]})`}`
+    + `${reset ? `, ${reset} 뒤 초기화` : ''}, 5시간 산소 ${oxygenOf(s.fiveHour?.percent) ?? '—'}% 남음`
 }

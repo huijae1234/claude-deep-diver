@@ -1,4 +1,4 @@
-// 잠수 장비: 대화 기억 = 손목 잠수 시계, 7일 사용량 = 쌍둥이 산소통과 압력계
+// 잠수 장비: 대화 기억 = 손목 잠수 시계, 5시간 사용량 = 쌍둥이 산소통과 압력계
 import { tokensText } from './usage'
 
 const INK = '#1f2937'
@@ -47,15 +47,15 @@ export const diveWatch = (tokens: number | undefined, percent: number | undefine
     + text(cx + 4, h - 7, level.label, 'font-weight="700"')
 }
 
-// ── 7일 사용량: 노란 쌍둥이 산소통 + 압력계 ──
+// ── 5시간 사용량: 노란 쌍둥이 산소통 + 압력계 ──
 const tank = (x: number) =>
   `<path d="M${x} 44 q0 -12 13 -12 q13 0 13 12 v58 h-26z" fill="#fbb321"/>`
   + `<path d="M${x} 44 q0 -12 13 -12 v70 h-13z" fill="#e0952b"/>`
   + `<rect x="${x - 1}" y="102" width="28" height="12" rx="3" fill="#2b2b2b"/>`
   + `<rect x="${x + 9}" y="24" width="8" height="8" rx="1.5" fill="#fbb321"/>`
 
-export const oxygenOf = (sevenDayPercent?: number): number | undefined =>
-  sevenDayPercent === undefined ? undefined : Math.round(100 - clamp(sevenDayPercent))
+export const oxygenOf = (fiveHourPercent?: number): number | undefined =>
+  fiveHourPercent === undefined ? undefined : Math.round(100 - clamp(fiveHourPercent))
 
 const gauge = (cx: number, cy: number, r: number, left: number) => {
   const start = 150
@@ -85,8 +85,8 @@ const gauge = (cx: number, cy: number, r: number, left: number) => {
     + `<path d="${arc(cx, cy, r - 2, 200, 260)}" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.8"/>`
 }
 
-export const oxygenPanel = (sevenDayPercent: number | undefined, w: number, h: number) => {
-  const o2 = oxygenOf(sevenDayPercent)
+export const oxygenPanel = (fiveHourPercent: number | undefined, w: number, h: number) => {
+  const o2 = oxygenOf(fiveHourPercent)
   const left = o2 ?? 0
   const isLow = o2 !== undefined && o2 < 20
   const [gx, gy, gr] = [w - 40, 54, 30]
@@ -106,5 +106,5 @@ export const oxygenPanel = (sevenDayPercent: number | undefined, w: number, h: n
     + gauge(gx, gy, gr, left)
     + (isLow ? `<rect x="${gx - 39}" y="${h - 26}" width="76" height="20" rx="6" fill="url(#danger)"/>` : '')
     + text(gx, h - 11, o2 === undefined ? '산소 —' : `${isLow ? '⚠ ' : ''}산소 ${o2}%`, 'font-weight="700"', isLow ? '#ffffff' : INK)
-    + text(w / 2 + 14, 13, '7일', 'font-weight="600"')
+    + text(w / 2 + 14, 13, '5시간', 'font-weight="600"')
 }
