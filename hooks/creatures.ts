@@ -78,11 +78,11 @@ const whaleBody = wag(-70, 0, 6, 3, `<path d="M-70 0 l-20 -15 q7 15 0 15 q7 2 0 
   + `<circle cx="10" cy="-18" r="1.2" fill="#9fc3e8"/><circle cx="-14" cy="-12" r="1" fill="#9fc3e8"/>`
 const whales = whaleBody + `<g transform="translate(-48,26) scale(0.42)">${whaleBody}</g>`
 
-// 수면 근처 고래: 8초마다 숨구멍으로 물을 뿜는다
+// 수면 근처 고래: 40초에 한 번 숨구멍으로 물을 뿜는다
 const spout = `<path d="M0 0 q-3 -60 -22 -100 q14 14 22 44 q8 -30 22 -44 q-19 40 -22 100z" fill="#ffffff" opacity="0.85"/>`
   + [[-24, -104], [22, -102], [-12, -112], [10, -114], [0, -118]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3" fill="#e0f7ff"/>`).join('')
 const spoutingWhale = whaleBody
-  + `<g class="spout" transform="translate(16,-24)"><g><animateTransform attributeName="transform" type="scale" values="1 0;1 0;1 1;1 1.1;1 0;1 0" keyTimes="0;0.6;0.66;0.76;0.82;1" dur="8s" repeatCount="indefinite"/>${spout}</g></g>`
+  + `<g class="spout" transform="translate(16,-24)"><g><animateTransform attributeName="transform" type="scale" values="1 0;1 0;1 1;1 1.1;1 0;1 0" keyTimes="0;0.9;0.912;0.932;0.944;1" dur="40s" repeatCount="indefinite"/>${spout}</g></g>`
 
 const tentacle = (x: number, y: number, len: number, swing: number, dur: number) =>
   `<path d="M${x} ${y} q${len / 3} ${swing} ${len / 1.5} 0 t${len / 3} ${-swing / 2}" stroke="#c2412d" stroke-width="2" fill="none" stroke-linecap="round">`

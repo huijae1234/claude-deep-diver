@@ -1,7 +1,7 @@
 // 수면 이벤트: 가끔 돌고래가 물 위로 점프한다(긴 주기 중 잠깐만 보인다)
 import { DOLPHIN } from './creatures'
 
-const CYCLE = 26 // 초: 이만큼마다 한 번
+const CYCLE = 90 // 초: 이만큼마다 한 번(자주 나오면 정신없어서 길게)
 const ACTIVE = 2.4 // 초: 점프 길이
 const k = +(ACTIVE / CYCLE).toFixed(4)
 
@@ -16,7 +16,7 @@ const loop = (attr: string, values: string, keyTimes: string, extra = '') =>
   `<animate${extra ? 'Transform' : ''} attributeName="${attr}"${extra} values="${values}" keyTimes="${keyTimes}" dur="${CYCLE}s" begin="4s" repeatCount="indefinite"/>`
 
 const splashAt = (x: number, at: number) =>
-  `<g opacity="0">${loop('opacity', '0;0;1;0;0', `0;${at};${+(at + 0.001).toFixed(4)};${+(at + 0.05).toFixed(4)};1`)}`
+  `<g opacity="0">${loop('opacity', '0;0;1;0;0', `0;${at};${+(at + 0.001).toFixed(4)};${+(at + 1.3 / CYCLE).toFixed(4)};1`)}`
   + `<circle cx="${x}" cy="0" r="10" fill="none" stroke="#ffffff" stroke-width="1.6"/>`
   + [-8, -3, 3, 8].map(dx => `<circle cx="${x + dx}" cy="${-6 - Math.abs(dx) / 2}" r="1.6" fill="#e0f7ff"/>`).join('')
   + `</g>`
