@@ -2,6 +2,7 @@ import type { Snapshot } from '../types'
 import { PINK_DOLPHIN, SWIMMERS } from './creatures'
 import type { Swimmer } from './creatures'
 import { PIRATE_SHIP, TREASURE } from './deep'
+import { celebration, isAtBottom } from './finish'
 import { dolphinLeap } from './surface'
 import { diveWatch, oxygenOf, oxygenPanel } from './gear'
 import { resetText, tokensText } from './usage'
@@ -176,7 +177,9 @@ const scene = ({ from, to, intro, isWorking, pink }: Motion) => {
   const moved = from !== undefined && Math.abs(from - to) >= 0.5
   // 한도가 돌아오면(숫자가 줄면) 바닥에서 천천히 헤엄쳐 올라온다
   const pan = moved ? translate(`0,${worldShift(from)};0,${shift}`, to < from ? 6 : 3) : ''
-  return `<g transform="translate(0,${shift})">${pan}${world(pink)}</g>` + diver('')
+  const sea = `<g transform="translate(0,${shift})">${pan}${world(pink)}</g>`
+  // 100%면 바닥(원래 머리 높이)에 서서 만세하고 깃발을 꽂는다
+  return sea + (isAtBottom(to) ? celebration(DIVER_X, DIVER_Y) : diver(''))
 }
 
 // 오른쪽 가장자리 수심 자: 20%마다 구간 색
@@ -196,7 +199,7 @@ const ocean = (s: Snapshot, now: number, motion: Motion) => {
   const p = s.sevenDay?.percent
   const reset = resetText(s.sevenDay?.resetsAt, now)
   const isRising = motion.from !== undefined && motion.to < motion.from - 0.5
-  const place = isOnHelicopter(p) ? '🚁 점프 준비' : ZONES[zoneOf(p)]
+  const place = isOnHelicopter(p) ? '🚁 점프 준비' : isAtBottom(p) ? '🏁 해구 정복' : ZONES[zoneOf(p)]
   const head = p === undefined ? '7일 —' : `7일 ${Math.round(p)}% · ${place}${isRising ? ' · ⬆ 올라오는 중' : ''}`
   return `<defs><clipPath id="sea"><rect width="${OW}" height="${BAND_H}" rx="16"/></clipPath></defs>`
     + `<g transform="translate(${OX},0)"><g clip-path="url(#sea)">`

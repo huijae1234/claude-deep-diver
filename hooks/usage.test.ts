@@ -104,3 +104,14 @@ test('인어와 덤보문어는 뺐다', () => {
   expect(svg).not.toContain('class="mermaid"')
   expect(svg).not.toContain('class="dumbo"')
 })
+
+test('100% 도착하면 바닥에 서서 만세하고 깃발을 꽂는다', () => {
+  const done = bandSvg({ ...base, sevenDay: { percent: 100 } }, 60000, false)
+  expect(done).toContain('class="cheer"')
+  expect(done).toContain('class="flag"')
+  expect(done).toContain('해구 정복')
+  // 99%까지는 여전히 머리를 아래로 하고 헤엄친다
+  const almost = bandSvg({ ...base, sevenDay: { percent: 99 } }, 60000, false)
+  expect(almost).not.toContain('class="cheer"')
+  expect(almost).not.toContain('class="flag"')
+})
